@@ -1,6 +1,14 @@
-function scheduleMeeting(startTime, durationMinutes) {
-  const dayStart = "07:30";
-  const dayEnd = "17:45";
+const dayStart = "07:30";
+
+const dayEnd = "17:45";
+const timeFormatRegexp = new RegExp(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/
+)
+// https://digitalfortress.tech/tips/top-15-commonly-used-regex/
+
+export const TIME_FORMAT_ERROR_STRING = 'Must match hh:mm format!'
+
+export function scheduleMeeting(startTime, durationMinutes) {
+  if(!timeFormatRegexp.test(startTime)) throw new Error(TIME_FORMAT_ERROR_STRING) 
   const getTime = (str) => str.split(":").map((char) => Number(char));
   const afterStart = (start, meetingStart, meetingEnd) =>
     start <= meetingStart && start <= meetingEnd;
@@ -26,10 +34,3 @@ function scheduleMeeting(startTime, durationMinutes) {
     )
   );
 }
-console.log(scheduleMeeting("7:00", 15));
-console.log(scheduleMeeting("07:15", 30));
-console.log(scheduleMeeting("7:30", 30));
-console.log(scheduleMeeting("11:30", 60));
-console.log(scheduleMeeting("17:00", 45));
-console.log(scheduleMeeting("17:30", 30));
-console.log(scheduleMeeting("18:00", 15));
